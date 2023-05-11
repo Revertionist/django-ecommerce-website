@@ -14,7 +14,8 @@ Signup
     <form method="POST" class="form-group">
         {% csrf_token %}
         {{form|crispy}}
-        <button type="submit" class="btn btn_success">Signup</button>
+        <p>Already have an account? Login <a href="/login/">here</a></p>
+        <button type="submit" class="btn btn-success">Signup</button>
     </form>
 </div>
 {% endblock %}
