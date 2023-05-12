@@ -1,5 +1,6 @@
-from django.shortcuts import render
+from django.shortcuts import render, HttpResponseRedirect
 from .models import Product
+from django.http import Http404
 
 # Create your views here.
 
@@ -36,6 +37,9 @@ def profile(request):
 
 def confirmation(request, id):
     product = Product.objects.get(id=id)
-    product.stock = product.stock - 1
-    product.save()
-    return render (request, 'main/pages/confirmation.html', {"product": product})
+    if product.stock <= 0:
+        raise Http404
+    else:
+        product.stock = product.stock - 1
+        product.save()
+        return render (request, 'main/pages/confirmation.html', {"product": product})

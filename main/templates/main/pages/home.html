@@ -19,7 +19,7 @@ Home
                 {% if product.stock <= 0 %}
                 <h5 class="card-title">{{ product.title }} (Not in stock) </h5>
                 <p class="card-text">Rs. {{ product.price }}</p>
-                <a href="#" class="btn btn-primary">Buy</a>
+                <a class="btn btn-primary disabled" >Buy</a>
                 {% else %}
                 <h5 class="card-title">{{ product.title }}</h5>
                 <p class="card-text">Rs. {{ product.price }}</p>

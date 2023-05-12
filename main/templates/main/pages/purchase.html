@@ -6,16 +6,22 @@
 
 {% block content %}
 {% include 'main/components/navbar.html' %}
-<div class = "container  purchase-card" style="margin-top: 30px;">
+<div class="container  purchase-card" style="margin-top: 30px;">
     <div class="card mb-3">
         <img class="card-img-top" src="{{ product.image.url }}" alt="Card image cap" data-bs-theme="light">
         <div class="card-body">
             <br>
-            <h1 class="card-title">{{ product.title }} 
+            <h1 class="card-title">{{ product.title }}
             </h1>
             <p class="card-text">{{ product.description }}</p>
-           <h1><p class="card-text"><small class="text-muted">Rs. {{ product.price }}</small></p></h1> 
-           <a href="/confirmation/{{ product.id }}" class="btn btn-primary">Buy</a>
+            <h1>
+                <p class="card-text"><small class="text-muted">Rs. {{ product.price }}</small></p>
+            </h1>
+            {%if product.stock > 0 %} 
+                <a href="/confirmation/{{ product.id }}" class="btn btn-primary">Buy</a>
+            {% else %}
+                <a class="btn btn-primary disabled">Buy</a>
+            {% endif %}
         </div>
     </div>
 </div>
