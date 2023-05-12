@@ -30,3 +30,12 @@ def set_placeholder_data(request):
 def buy(request, id):
     product = Product.objects.get(id=id)
     return render (request, 'main/pages/purchase.html', {"product": product})
+
+def profile(request):
+    return render (request, 'main/pages/profile.html',{})
+
+def confirmation(request, id):
+    product = Product.objects.get(id=id)
+    product.stock = product.stock - 1
+    product.save()
+    return render (request, 'main/pages/confirmation.html', {"product": product})

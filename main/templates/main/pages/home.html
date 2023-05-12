@@ -16,9 +16,15 @@ Home
         <div class="card" style="width: 18rem; margin: 5px">
             <img class="card-img-top product-styling" src="{{ product.image.url }}" alt="Card image cap">
             <div class="card-body">
+                {% if product.stock <= 0 %}
+                <h5 class="card-title">{{ product.title }} (Not in stock) </h5>
+                <p class="card-text">Rs. {{ product.price }}</p>
+                <a href="#" class="btn btn-primary">Buy</a>
+                {% else %}
                 <h5 class="card-title">{{ product.title }}</h5>
                 <p class="card-text">Rs. {{ product.price }}</p>
                 <a href="purchase/{{ product.id }}" class="btn btn-primary">Buy</a>
+                {% endif %}
             </div>
         </div>
         {% endfor %}

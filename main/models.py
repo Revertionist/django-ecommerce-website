@@ -7,3 +7,4 @@ class Product(models.Model):
     description = models.TextField (null=False)
     image = models.ImageField(upload_to='products/')
     price = models.DecimalField(max_digits=6, decimal_places=2)
+    stock = models.IntegerField()

@@ -131,3 +131,7 @@ MEDIA_ROOT = "media/"
 MEDIA_URL = "media/"
 
 CRISPY_TEMPLATE_PACK="bootstrap4"
+
+RAZOR_KEY_ID = ""
+
+RAZOR_KEY_SECRET = ""
