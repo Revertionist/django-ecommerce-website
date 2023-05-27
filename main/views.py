@@ -1,12 +1,18 @@
-from django.shortcuts import render, HttpResponseRedirect
+from django.shortcuts import render
 from .models import Product
 from django.http import Http404
+from django.conf import settings
 
-# Create your views here.
+
+razorpay_client = razorpay.Client(
+    auth=(settings.RAZOR_KEY_ID, settings.RAZOR_KEY_SECRET)
+)
+
 
 def home(request):
-    products=Product.objects.all()
-    return render (request, 'main/pages/home.html', {"products": products})
+    products = Product.objects.all()
+    return render(request, 'main/pages/home.html', {"products": products})
+
 
 def set_placeholder_data(request):
     from django.core.files import File
@@ -28,12 +34,15 @@ def set_placeholder_data(request):
         p.save()
     return HttpResponse("data saved")
 
+
 def buy(request, id):
     product = Product.objects.get(id=id)
-    return render (request, 'main/pages/purchase.html', {"product": product})
+    return render(request, 'main/pages/purchase.html', {"product": product})
+
 
 def profile(request):
-    return render (request, 'main/pages/profile.html',{})
+    return render(request, 'main/pages/profile.html', {})
+
 
 def confirmation(request, id):
     product = Product.objects.get(id=id)
@@ -42,4 +51,4 @@ def confirmation(request, id):
     else:
         product.stock = product.stock - 1
         product.save()
-        return render (request, 'main/pages/confirmation.html', {"product": product})
+        return render(request, 'main/pages/confirmation.html', {"product": product})
