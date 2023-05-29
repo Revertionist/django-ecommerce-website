@@ -1,5 +1,5 @@
 from django.db import models
-from django.contrib import settings
+from django.conf import settings
 import stripe
 
 # Create your models here.
@@ -18,8 +18,11 @@ class Product(models.Model):
     def save(self, *args, **kwargs):
         stripe.api_key = settings.STRIPE_SECRET_KEY
         stripe_product = stripe.Product.create(name=self.title)
-        stripe_price = stripe.Product.create(
-            currency='inr', product=stripe_product.id, unit_amount=int(self.price * 100))
+        stripe_price = stripe.Price.create(
+            currency= 'inr', 
+            product= stripe_product.id, 
+            unit_amount= int(self.price * 100)
+            )
         self.stripe_product_id = stripe_product.id
         self.stripe_price_id = stripe_price.id
         return super().save(*args, **kwargs)

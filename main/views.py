@@ -2,11 +2,9 @@ from django.shortcuts import render
 from .models import Product
 from django.http import Http404
 from django.conf import settings
-
-
-razorpay_client = razorpay.Client(
-    auth=(settings.RAZOR_KEY_ID, settings.RAZOR_KEY_SECRET)
-)
+import stripe
+from django.contrib.auth.decorators import login_required
+from django.urls import reverse
 
 
 def home(request):
@@ -52,3 +50,24 @@ def confirmation(request, id):
         product.stock = product.stock - 1
         product.save()
         return render(request, 'main/pages/confirmation.html', {"product": product})
+    
+
+def checkout(request, id):
+    product = Product.objects.get(id=id)
+    stripe.api_key = settings.STRIPE_API_KEY
+    session = stripe.checkout.Session.create(
+        payment_method_types=['card'],
+        line_items=[{
+            'price': product.stripe_price_id,
+            'quantity': 1,
+        }],
+        mode='payment',
+        success_url=request.build_absolute_uri(reverse('confirmation')) + '?session_id={CHECKOUT_SESSION_ID}',
+        cancle_url=request.build_absolute_uri(reverse('buy')),
+    )
+    context = {
+        'session_id' : session.id,
+        'stripe_public_key' : settings.STRIPE_API_KEY,
+    }
+    print(settings.STRIPE_API_KEY)
+    return render(request, 'purchase.html', {"context": context})
