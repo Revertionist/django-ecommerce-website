@@ -64,8 +64,8 @@ def checkout(request, id):
             }
         ],
         mode = 'payment',
-        success_url = "https://127.0.0.1:8000/payment/success?session_id={CHECKOUT_SESSION_ID}",
-        cancel_url = "https://127.0.0.1:8000/payment/cancel"
+        success_url = "http://127.0.0.1:8000/payment/success",
+        cancel_url = "http://127.0.0.1:8000/payment/cancel"
     )
     context = {
         "session_id": checkout_session.id,
@@ -74,3 +74,6 @@ def checkout(request, id):
         
     }
     return render(request, 'main/pages/purchase.html', context)
+
+def success(request):
+    return render (request, 'main/pages/success.html',{})

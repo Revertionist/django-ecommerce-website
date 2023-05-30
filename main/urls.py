@@ -7,5 +7,6 @@ urlpatterns = [
     #path('purchase/<id>', views.buy, name='buy'),
     path('accounts/profile/', views.profile, name='profile'),
     path('confirmation/<id>', views.confirmation, name='confirmation'),
-    path('checkout/<id>', views.checkout, name='checkout')
+    path('checkout/<id>', views.checkout, name='checkout'),
+    path('payment/success', views.success, name='success')
 ]
