@@ -16,7 +16,7 @@ class Product(models.Model):
     stripe_price_id = models.CharField(max_length=100, null=True)
     
     def save(self, *args, **kwargs):
-        stripe.api_key = settings.STRIPE_SECRET_KEY
+        stripe.api_key = settings.STRIPE_PRIVATE_KEY
         stripe_product = stripe.Product.create(name=self.title)
         stripe_price = stripe.Price.create(
             currency= 'inr', 
