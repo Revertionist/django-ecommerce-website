@@ -8,5 +8,6 @@ urlpatterns = [
     path('accounts/profile/', views.profile, name='profile'),
     path('confirmation/<id>', views.confirmation, name='confirmation'),
     path('checkout/<id>', views.checkout, name='checkout'),
-    path('payment/success', views.success, name='success')
+    path('payment/success', views.success, name='success'),
+    path('check/', views.check, name="check"),
 ]

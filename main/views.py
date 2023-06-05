@@ -1,11 +1,11 @@
 from django.shortcuts import render, redirect
 from .models import Product
-from django.http import Http404
+from django.http import Http404, JsonResponse
 from django.conf import settings
 import stripe
 from django.contrib.auth.decorators import login_required
 from django.urls import reverse
-
+from django.views.decorators.csrf import csrf_exempt
 
 def home(request):
     products = Product.objects.all()
@@ -54,6 +54,20 @@ def confirmation(request, id):
 
 def checkout(request, id):
     product = Product.objects.get(id=id)
+    
+    context = {
+        "session_id": checkout_session.id,
+        "stripe_public_key": settings.STRIPE_PUBLIC_KEY,
+        "product": product
+        
+    }
+    return render(request, 'main/pages/purchase.html', context)
+
+def success(request):
+    return render (request, 'main/pages/success.html',{})
+@csrf_exempt
+def check(request):
+    product = Product.objects.get(id=id)
     stripe.api_key = settings.STRIPE_PRIVATE_KEY
     checkout_session = stripe.checkout.Session.create(
         payment_method_types=['card'],
@@ -67,13 +81,8 @@ def checkout(request, id):
         success_url = "http://127.0.0.1:8000/payment/success",
         cancel_url = "http://127.0.0.1:8000/payment/cancel"
     )
-    context = {
+    JsonResponse({
         "session_id": checkout_session.id,
         "stripe_public_key": settings.STRIPE_PUBLIC_KEY,
         "product": product
-        
-    }
-    return render(request, 'main/pages/purchase.html', context)
-
-def success(request):
-    return render (request, 'main/pages/success.html',{})
+    })
